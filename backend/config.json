@@ -1,0 +1,4 @@
+{
+    "connectionString": "mongodb://127.0.0.1:27017/noteapp", 
+    "ACCESS_TOKEN_SECRET": "353664d4c5c2826767575d275218d87364673"
+}
