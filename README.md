@@ -12,6 +12,7 @@ SochAurLikh is a modern note-taking application designed to help you capture, or
 -   **Archive & Trash**: Manage old or unwanted notes without losing them permanently.
 -   **Responsive Design**: Works beautifully on desktop and mobile devices.
 -   **Secure Authentication**: User registration and login with JWT.
+-   **Private Notes**: Keep your thoughts secure and accessible only to you.
 
 ## 🛠️ Tech Stack
 
