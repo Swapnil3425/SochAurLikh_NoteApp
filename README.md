@@ -1,6 +1,6 @@
-# SochAurLikh - AI Powered Note Taking App
+# SochAurLikh - Modern Note Taking App
 
-SochAurLikh is a modern, AI-powered note-taking application designed to help you capture, organize, and refine your thoughts. Built with the MERN stack (MongoDB, Express.js, React, Node.js), it offers a seamless and intuitive user experience.
+SochAurLikh is a modern note-taking application designed to help you capture, organize, and refine your thoughts. Built with the MERN stack (MongoDB, Express.js, React, Node.js), it offers a seamless and intuitive user experience.
 
 ## 🚀 Features
 
