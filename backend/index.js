@@ -180,7 +180,7 @@ app.put("/update-user", authenticateToken, async (req, res) => {
 
 // Add Note
 app.post("/add-note", authenticateToken, async (req, res) => {
-  const { title, content, tags } = req.body;
+  const { title, content, tags, isPinned, isFavorite, isArchived, isPrivate } = req.body;
   const { user } = req.user;
   console.log("Adding note for userId:", user._id, "Type:", typeof user._id); // Log type
   const userIdStr = String(user._id); // Force string
