@@ -40,7 +40,7 @@ const DashboardLayout = () => {
                             transition={{ type: "spring", damping: 25, stiffness: 200 }}
                             className="fixed inset-y-0 left-0 w-64 z-50 lg:hidden"
                         >
-                            <Sidebar className="w-full h-full shadow-2xl" />
+                            <Sidebar className="w-full h-full shadow-2xl" onClose={() => setSidebarOpen(false)} />
                         </motion.div>
                     </>
                 )}

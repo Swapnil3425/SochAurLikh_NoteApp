@@ -16,12 +16,13 @@ import {
     Plus,
     Sun,
     Moon,
-    Lock
+    Lock,
+    Network
 } from 'lucide-react';
 import { cn } from '../utils/cn';
 import Button from './Button';
 
-const Sidebar = ({ className }) => {
+const Sidebar = ({ className, onClose }) => {
     const { user, logout, setPrivateNotesUnlocked } = useAuth();
     const { theme, toggleTheme } = useTheme();
     const navigate = useNavigate();
@@ -80,9 +81,14 @@ const Sidebar = ({ className }) => {
     const navItems = [
         { icon: LayoutGrid, label: 'All Notes', path: '/dashboard' },
         { icon: Star, label: 'Favorites', path: '/dashboard/favorites' },
+        { icon: Network, label: 'Thought Cloud', path: '/dashboard/thought-cloud' },
         { icon: Lock, label: 'Private Notes', path: '/dashboard/private-notes' },
         { icon: Trash2, label: 'Trash', path: '/dashboard/trash' },
     ];
+
+    const handleNavClick = () => {
+        if (onClose) onClose();
+    };
 
     return (
         <aside className={cn("flex flex-col h-screen w-64 bg-white/60 dark:bg-slate-900/60 backdrop-blur-xl border-r border-white/20 dark:border-slate-800/50 fixed left-0 top-0 z-40 transition-transform duration-300 ease-in-out", className)}>
@@ -101,7 +107,7 @@ const Sidebar = ({ className }) => {
 
             {/* Create Button */}
             <div className="px-4 mb-6">
-                <Link to="/dashboard/new">
+                <Link to="/dashboard/new" onClick={handleNavClick}>
                     <Button className="w-full justify-start shadow-lg shadow-primary-500/20" size="lg">
                         <Plus className="w-5 h-5 mr-2" /> New Note
                     </Button>
@@ -122,6 +128,7 @@ const Sidebar = ({ className }) => {
                             if (item.label !== 'Private Notes') {
                                 setPrivateNotesUnlocked(false);
                             }
+                            handleNavClick();
                         }}
                         end={item.path === '/dashboard'}
                         className={({ isActive }) => cn(
@@ -168,7 +175,10 @@ const Sidebar = ({ className }) => {
                     const colorClass = colors[i % colors.length];
 
                     return (
-                        <Link key={tag} to={`/dashboard?tag=${tag}`} onClick={() => setPrivateNotesUnlocked(false)}>
+                        <Link key={tag} to={`/dashboard?tag=${tag}`} onClick={() => {
+                            setPrivateNotesUnlocked(false);
+                            handleNavClick();
+                        }}>
                             <button className={cn(
                                 "flex items-center gap-3 px-4 py-2 w-full text-left rounded-xl text-sm font-medium transition-all border mb-1",
                                 isActiveTag

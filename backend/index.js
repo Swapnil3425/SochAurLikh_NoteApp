@@ -17,6 +17,11 @@ const { authenticateToken } = require("./utilities");
 
 app.use(express.json());
 
+app.use((req, res, next) => {
+  console.log(`${req.method} ${req.originalUrl}`);
+  next();
+});
+
 app.use(
   cors({
     origin: "*",
@@ -44,37 +49,45 @@ app.post("/create-account", async (req, res) => {
       .json({ error: true, message: "Password is required" });
   }
 
-  const isUser = await User.findOne({ email: email });
+  try {
+    const isUser = await User.findOne({ email: email });
 
-  if (isUser) {
+    if (isUser) {
+      return res.json({
+        error: true,
+        message: "User already exists",
+      });
+    }
+
+    const user = new User({
+      fullName,
+      email,
+      password,
+    });
+
+    await user.save();
+
+    const accessToken = jwt.sign(
+      { user },
+      process.env.ACCESS_TOKEN_SECRET,
+      {
+        expiresIn: "36000m",
+      }
+    );
+
     return res.json({
+      error: false,
+      user,
+      accessToken,
+      message: "Registration Successful",
+    });
+  } catch (error) {
+    console.error("Error in create-account:", error);
+    return res.status(500).json({
       error: true,
-      message: "User already exists",
+      message: "Internal Server Error",
     });
   }
-
-  const user = new User({
-    fullName,
-    email,
-    password,
-  });
-
-  await user.save();
-
-  const accessToken = jwt.sign(
-    { user },
-    process.env.ACCESS_TOKEN_SECRET,
-    {
-      expiresIn: "36000m",
-    }
-  );
-
-  return res.json({
-    error: false,
-    user,
-    accessToken,
-    message: "Registration Successful",
-  });
 });
 
 // Login
@@ -89,33 +102,41 @@ app.post("/login", async (req, res) => {
     return res.status(400).json({ message: "Password is required" });
   }
 
-  const userInfo = await User.findOne({ email: email });
+  try {
+    const userInfo = await User.findOne({ email: email });
 
-  if (!userInfo) {
-    return res.status(400).json({ message: "User not found" });
-  }
+    if (!userInfo) {
+      return res.status(400).json({ message: "User not found" });
+    }
 
-  if (userInfo.email == email && userInfo.password == password) {
-    const user = { user: userInfo };
-    const accessToken = jwt.sign(
-      user,
-      process.env.ACCESS_TOKEN_SECRET,
-      {
-        expiresIn: "36000m",
-      }
-    );
+    if (userInfo.email == email && userInfo.password == password) {
+      const user = { user: userInfo };
+      const accessToken = jwt.sign(
+        user,
+        process.env.ACCESS_TOKEN_SECRET,
+        {
+          expiresIn: "36000m",
+        }
+      );
 
-    return res.json({
-      error: false,
-      message: "Login Successful",
-      email,
-      accessToken,
-      user: userInfo,
-    });
-  } else {
-    return res.status(400).json({
+      return res.json({
+        error: false,
+        message: "Login Successful",
+        email,
+        accessToken,
+        user: userInfo,
+      });
+    } else {
+      return res.status(400).json({
+        error: true,
+        message: "Invalid Credentials",
+      });
+    }
+  } catch (error) {
+    console.error("Error in login:", error);
+    return res.status(500).json({
       error: true,
-      message: "Invalid Credentials",
+      message: "Internal Server Error",
     });
   }
 });

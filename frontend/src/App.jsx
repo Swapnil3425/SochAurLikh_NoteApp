@@ -9,6 +9,7 @@ const Dashboard = React.lazy(() => import('./pages/Dashboard'));
 const DashboardLayout = React.lazy(() => import('./layouts/DashboardLayout'));
 const NoteEditor = React.lazy(() => import('./pages/NoteEditor'));
 const PrivateNotes = React.lazy(() => import('./pages/PrivateNotes'));
+const ThoughtCloud = React.lazy(() => import('./pages/ThoughtCloud'));
 
 // Fallbacks
 const LoadingFallback = () => <div className="flex items-center justify-center h-screen bg-slate-50 text-slate-400">Loading...</div>;
@@ -41,6 +42,7 @@ function App() {
                   <Route path="favorites" element={<Dashboard type="favorites" />} />
                   <Route path="archive" element={<Dashboard type="archive" />} />
                   <Route path="trash" element={<Dashboard type="trash" />} />
+                  <Route path="thought-cloud" element={<ThoughtCloud />} />
                   <Route path="private-notes" element={<PrivateNotes />} /> {/* Added PrivateNotes route */}
                 </Route>
               </Routes>

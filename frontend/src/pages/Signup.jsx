@@ -92,7 +92,7 @@ const Signup = () => {
                         <Input
                             label="Full Name"
                             type="text"
-                            placeholder="John Doe"
+                            placeholder="Aravind Sharma"
                             icon={User}
                             value={name}
                             onChange={(e) => setName(e.target.value)}

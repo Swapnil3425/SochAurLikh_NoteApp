@@ -11,10 +11,26 @@ const Topbar = ({ onMenuClick, className }) => {
     const { theme, toggleTheme } = useTheme(); // Theme hook
     const navigate = useNavigate();
 
+    // Refs
+    const searchInputRef = useRef(null);
+    const editInputRef = useRef(null);
+
     // Profile Editing State
     const [isEditing, setIsEditing] = useState(false);
     const [editName, setEditName] = useState("");
-    const editInputRef = useRef(null);
+
+    // Handle Ctrl+K to focus search
+    useEffect(() => {
+        const handleKeyDown = (e) => {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                e.preventDefault();
+                searchInputRef.current?.focus();
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, []);
 
     useEffect(() => {
         if (isEditing && editInputRef.current) {
@@ -45,7 +61,7 @@ const Topbar = ({ onMenuClick, className }) => {
         }
     };
 
-    const handleKeyDown = (e) => {
+    const handleEditKeyDown = (e) => {
         if (e.key === 'Enter') handleSaveEdit();
         if (e.key === 'Escape') handleCancelEdit();
     };
@@ -93,23 +109,22 @@ const Topbar = ({ onMenuClick, className }) => {
                         <Search className="w-4 h-4" />
                     </div>
                     <input
+                        ref={searchInputRef}
                         type="text"
                         placeholder="Search notes, tags..."
                         value={searchParams.get("query") || ""}
                         onChange={handleSearch}
                         className="w-full bg-white/50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/50 text-slate-900 dark:text-white placeholder:text-slate-400 text-sm rounded-xl focus:ring-2 focus:ring-primary-100 dark:focus:ring-primary-900/30 focus:border-primary-500 block pl-10 p-2.5 transition-all shadow-sm group-focus-within:shadow-md"
                     />
-                    <div className="absolute right-3 top-1/2 -translate-y-1/2 flex gap-1">
-                        <kbd className="hidden sm:inline-flex items-center gap-1 px-1.5 py-0.5 text-[10px] font-medium text-slate-400 bg-white/50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded">
+                    <div className="absolute right-3 top-1/2 -translate-y-1/2 flex gap-1 group/kbd cursor-default">
+                        <kbd className="hidden sm:inline-flex items-center gap-1 px-1.5 py-0.5 text-[10px] font-medium text-slate-400 bg-white/50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded transition-colors group-hover/kbd:border-primary-300 dark:group-hover/kbd:border-primary-700 group-hover/kbd:text-primary-500">
                             <span className="text-xs">⌘</span>K
                         </kbd>
+                        <div className="absolute top-full right-0 mt-1.5 px-2 py-1 bg-slate-800 text-slate-100 text-[10px] font-medium rounded shadow-lg opacity-0 translate-y-1 group-hover/kbd:opacity-100 group-hover/kbd:translate-y-0 transition-all pointer-events-none whitespace-nowrap z-50">
+                            Press Ctrl+K to search
+                        </div>
                     </div>
                 </div>
-
-                <button className="p-2.5 text-slate-500 hover:text-primary-600 hover:bg-primary-50 rounded-xl transition-all relative">
-                    <Bell className="w-5 h-5" />
-                    <span className="absolute top-2.5 right-2.5 w-2 h-2 bg-red-500 rounded-full border border-white"></span>
-                </button>
 
                 {/* Theme Toggle */}
                 <button
@@ -135,7 +150,7 @@ const Topbar = ({ onMenuClick, className }) => {
                                     type="text"
                                     value={editName}
                                     onChange={(e) => setEditName(e.target.value)}
-                                    onKeyDown={handleKeyDown}
+                                    onKeyDown={handleEditKeyDown}
                                     onBlur={handleCancelEdit} // Optional: save or cancel on blur
                                     className="w-32 px-1 py-0.5 text-xs font-semibold text-slate-800 dark:text-slate-200 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded focus:outline-none focus:border-primary-500"
                                 />
@@ -150,7 +165,7 @@ const Topbar = ({ onMenuClick, className }) => {
                         )}
                     </div>
                     <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary-100 to-primary-200 dark:from-primary-900 dark:to-primary-800 border border-primary-200 dark:border-primary-700 flex items-center justify-center text-primary-700 dark:text-primary-300 font-medium text-xs">
-                        {user?.fullName ? user.fullName.split(" ").map(n => n[0]).join("").toUpperCase().substring(0, 2) : "JD"}
+                        {user?.fullName ? user.fullName.split(" ").map(n => n[0]).join("").toUpperCase().substring(0, 2) : "AS"}
                     </div>
                     <button
                         onClick={onLogout}
