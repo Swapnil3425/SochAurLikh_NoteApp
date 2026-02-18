@@ -5,11 +5,15 @@ SochAurLikh is a modern note-taking application designed to help you capture, or
 ## 🚀 Features
 
 -   **Create, Read, Update, Delete (CRUD) Notes**: Full control over your notes.
+-   **Focus Mode 🧘**: Distraction-free writing experience with true fullscreen support.
+-   **Voice-to-Text 🎙️**: Dictate notes in English (US/India) or Hindi with real-time feedback.
+-   **Thought Cloud 🧠**: Interactive visualization of your notes and tags to see connections.
 -   **Rich Text Editing**: Format your notes with ease.
 -   **Tagging System**: Organize notes with custom tags.
 -   **Search & Filter**: Quickly find notes by keywords or tags.
 -   **Pin Important Notes**: Keep your most important notes at the top.
 -   **Archive & Trash**: Manage old or unwanted notes without losing them permanently.
+-   **Touch-Friendly**: optimized for touchpads and touch screens.
 -   **Responsive Design**: Works beautifully on desktop and mobile devices.
 -   **Secure Authentication**: User registration and login with JWT.
 -   **Private Notes**: Keep your thoughts secure and accessible only to you.
