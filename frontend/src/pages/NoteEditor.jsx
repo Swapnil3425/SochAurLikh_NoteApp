@@ -223,12 +223,24 @@ const NoteEditor = () => {
 
         try {
             const noteData = { title, content, tags, isPinned, isFavorite, isArchived, isPrivate, isTrash };
-            // Assuming we are always editing an existing note here since noteId is in params
-            const response = await axiosInstance.put("/edit-note/" + noteId, noteData);
 
-            if (response.data && response.data.note) {
-                setLastEdited(new Date());
-                if (manual) showToast("Note saved successfully", "success");
+            if (noteId) {
+                // Edit existing note
+                const response = await axiosInstance.put("/edit-note/" + noteId, noteData);
+                if (response.data && response.data.note) {
+                    setLastEdited(new Date());
+                    if (manual) showToast("Note saved successfully", "success");
+                }
+            } else {
+                // Add new note
+                const response = await axiosInstance.post("/add-note", noteData);
+                if (response.data && response.data.note) {
+                    const newNoteId = response.data.note._id;
+                    setLastEdited(new Date());
+                    if (manual) showToast("Note saved successfully", "success");
+                    // Redirect to the new note's edit page to enable autosave and correct Routing
+                    navigate(`/dashboard/note/${newNoteId}`, { replace: true });
+                }
             }
         } catch (error) {
             console.error("Save error:", error);

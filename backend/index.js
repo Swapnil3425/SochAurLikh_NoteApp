@@ -253,6 +253,10 @@ app.post("/add-note", authenticateToken, async (req, res) => {
 // Edit Note
 app.put("/edit-note/:noteId", authenticateToken, async (req, res) => {
   const noteId = req.params.noteId;
+
+  if (!mongoose.Types.ObjectId.isValid(noteId)) {
+    return res.status(400).json({ error: true, message: "Invalid Note ID" });
+  }
   const { title, content, tags, isPinned, isFavorite, isArchived, isPrivate } = req.body;
   const { user } = req.user;
 
@@ -429,6 +433,10 @@ app.get("/get-all-tags", authenticateToken, async (req, res) => {
 // Delete Note (Soft Delete)
 app.delete("/delete-note/:noteId", authenticateToken, async (req, res) => {
   const noteId = req.params.noteId;
+
+  if (!mongoose.Types.ObjectId.isValid(noteId)) {
+    return res.status(400).json({ error: true, message: "Invalid Note ID" });
+  }
   const { user } = req.user;
 
   try {
@@ -457,6 +465,10 @@ app.delete("/delete-note/:noteId", authenticateToken, async (req, res) => {
 // Delete Note Permanent
 app.delete("/delete-note-permanent/:noteId", authenticateToken, async (req, res) => {
   const noteId = req.params.noteId;
+
+  if (!mongoose.Types.ObjectId.isValid(noteId)) {
+    return res.status(400).json({ error: true, message: "Invalid Note ID" });
+  }
   const { user } = req.user;
 
   try {
@@ -483,6 +495,10 @@ app.delete("/delete-note-permanent/:noteId", authenticateToken, async (req, res)
 // Restore Note
 app.put("/restore-note/:noteId", authenticateToken, async (req, res) => {
   const noteId = req.params.noteId;
+
+  if (!mongoose.Types.ObjectId.isValid(noteId)) {
+    return res.status(400).json({ error: true, message: "Invalid Note ID" });
+  }
   const { user } = req.user;
 
   try {
@@ -513,6 +529,10 @@ app.put("/restore-note/:noteId", authenticateToken, async (req, res) => {
 // Update Note Archive
 app.put("/update-note-archive/:noteId", authenticateToken, async (req, res) => {
   const noteId = req.params.noteId;
+
+  if (!mongoose.Types.ObjectId.isValid(noteId)) {
+    return res.status(400).json({ error: true, message: "Invalid Note ID" });
+  }
   const { isArchived } = req.body;
   const { user } = req.user;
 
@@ -548,6 +568,10 @@ app.put("/update-note-archive/:noteId", authenticateToken, async (req, res) => {
 // Update Note Pinned
 app.put("/update-note-pinned/:noteId", authenticateToken, async (req, res) => {
   const noteId = req.params.noteId;
+
+  if (!mongoose.Types.ObjectId.isValid(noteId)) {
+    return res.status(400).json({ error: true, message: "Invalid Note ID" });
+  }
   const { isPinned } = req.body;
   const { user } = req.user;
 
@@ -581,6 +605,10 @@ app.put("/update-note-pinned/:noteId", authenticateToken, async (req, res) => {
 // Update Note Favorite
 app.put("/update-note-favorite/:noteId", authenticateToken, async (req, res) => {
   const noteId = req.params.noteId;
+
+  if (!mongoose.Types.ObjectId.isValid(noteId)) {
+    return res.status(400).json({ error: true, message: "Invalid Note ID" });
+  }
   const { isFavorite } = req.body;
   const { user } = req.user;
 
@@ -614,6 +642,10 @@ app.put("/update-note-favorite/:noteId", authenticateToken, async (req, res) => 
 // Get Note
 app.get("/get-note/:noteId", authenticateToken, async (req, res) => {
   const noteId = req.params.noteId;
+
+  if (!mongoose.Types.ObjectId.isValid(noteId)) {
+    return res.status(400).json({ error: true, message: "Invalid Note ID" });
+  }
   const { user } = req.user;
 
   try {
